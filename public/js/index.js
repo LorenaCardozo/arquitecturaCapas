@@ -42,17 +42,6 @@ productForm.addEventListener('submit', (event) => {
 
 });
 
-/*
-// Agregar un evento de escucha para el boton eliminar
-const EliminarButton = document.getElementById('btnEliminar');
-EliminarButton.addEventListener('click', (event) => {
-        // Obtener el código del producto asociado al botón de eliminar
-        const codigoProducto = event.target.dataset.id;
-        console.log('***********', codigoProducto)
-        eliminarProducto (codigoProducto)
-});
-*/
-
 // Agregar un evento de escucha para el contenedor productList
 const productListContainer = document.getElementById('productList');
 productListContainer.addEventListener('click', (event) => {
@@ -93,9 +82,7 @@ socket.on('okDelete', (data) => {
 
     console.log('Evento okDelete recibido:', data);
 
-    // La respuesta del servidor debe contener el código del producto eliminado
     const codigoProductoEliminado = data.toString();
-
 
     let listaProductos = document.getElementById("productList");
     const productoAEliminar = listaProductos.querySelector(`li[data-id="${codigoProductoEliminado}"]`);
