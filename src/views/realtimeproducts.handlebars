@@ -1,0 +1,42 @@
+<div>
+
+    <h1>Realtime Productos</h1>
+
+ <form id="productForm" method="POST" action="/realtimeproducts">
+    <label for="productTitle">Título:</label>
+    <input type="text" id="productTitle" name="title" placeholder="Título del producto" required />
+
+    <label for="productDescription">Descripción:</label>
+    <textarea id="productDescription" name="description" placeholder="Descripción del producto" required></textarea>
+
+    <label for="productPrice">Precio:</label>
+    <input type="number" id="productPrice" name="price" step="0.01" placeholder="Precio del producto" required />
+
+    <label for="productThumbnail">Thumbnail:</label>
+    <input type="text" id="productThumbnail" name="thumbnail" placeholder="URL del thumbnail" required />
+
+    <label for="productCode">Código:</label>
+    <input type="text" id="productCode" name="code" placeholder="Código del producto" required />
+
+    <label for="productStock">Stock:</label>
+    <input type="number" id="productStock" name="stock" placeholder="Stock del producto" required />
+
+    <label for="productCateg">Categoría:</label>
+    <input type="text" id="productCateg" name="categoria" placeholder="Categoría" required />
+
+    <button type="submit">Agregar</button>
+</form>
+    <hr/>
+    <ul id="productList">
+        {{#each productos}}
+        <li data-id="{{code}}">
+            <p>Título: {{title}}</p>
+            <p>Descripción: {{description}}</p>
+            <p>Precio: {{price}}</p>
+            <button class="btnEliminar" id="btnEliminar" data-id="{{code}}">Eliminar</button>
+        </li>
+        {{/each}}
+    </ul>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="./js/index.js"></script>
