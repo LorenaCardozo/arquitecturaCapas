@@ -1,0 +1,11 @@
+<div>
+    <h1>{{ leyenda }}</h1>
+    <ul>
+        {{#each productos}}
+        <li>
+                Producto: {{ this.productId.title }} - 
+                Cantidad: {{ this.quantity }}            
+        </li>
+        {{/each}}
+    </ul>
+</div>

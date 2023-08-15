@@ -5,18 +5,41 @@ import viewsRoute from './routes/view.router.js';
 import viewsRealTime from './routes/view.realtime.js';
 import { __filename, __dirname } from "./utils.js";
 import { ProductManager } from './ProductManager.js';
+import mongoose from "mongoose";
+import * as dotenv from "dotenv";
+import cartRouter from "./routes/carts.router.js";
+import productRouter from "./routes/products.router.js";
 
+dotenv.config();
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
+const MONGO_URI = process.env.MONGO_URI;
+
+//Conexion a la base de datos
+
+let dbConnect = mongoose.connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
+
+dbConnect.then(
+    ()=>{console.log("Conexión a la base de datos exitosa");},
+    (error)  => {console.log("Error en la conexión a la base de datos", error);}
+)
 
 const pm = new ProductManager("productos.json")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/api/carts", cartRouter);
+app.use("/api/products", productRouter);
+
 const httpServer = app.listen(PORT, () => {
     console.log("Servidor corriendo en puerto: " + PORT)
 })
+
+
 
 
 app.engine('handlebars', engine());
@@ -26,6 +49,7 @@ app.set("views", `${__dirname}/views`);
 app.use(express.static("public"));
 app.use("/views", viewsRoute);
 app.use("/realtimeproducts", viewsRealTime);
+
 
 app.get("/", (req, res)=> {
     res.send ("Hola Mundo!");
