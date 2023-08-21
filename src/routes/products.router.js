@@ -1,6 +1,6 @@
 import { Router } from "express";
-//import ProductModel from "../models/products.models.js"
 import Products from "../dao/dbManager/products.js";
+import { AuthManager } from "../classes/AuthManager.js";
 
 const router = Router();
 const products = new Products();
@@ -22,20 +22,25 @@ const camposCompletos = (product) => {
 };
 
 
-router.get("/", async (req, res) => {
+router.get("/", AuthManager.auth, async (req, res) => {
     try {
         const limit = parseInt(req.query.limit) || 10; // Obtener el límite de la consulta
         const page = parseInt(req.query.page) || 1; // Obtener la pagina de la consulta
         const sort = req.query.sort; 
         const query = req.query.query; 
 
+        const userName = req.session.username
+        const userRole = req.session.admin? "Administrador": "Usuario"
 
-        const result = await products.getAll(limit, page, sort, query)
 
-        res.json({
+        const result = await products.getAll(limit, page, sort, query);
+        const plainProducts = result.docs.map(doc => doc.toObject());
+
+        res.render("products", {Leyenda:"Lista de productos", productos: plainProducts, userName: userName, userRole: userRole });
+        /*res.json({
             data: result,
             message: result.length ? "Productos" : "No hay Productos",
-        });
+        });*/
     } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -45,7 +50,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", AuthManager.auth, async (req, res) => {
 
     try{
         const { title, description, code, price, status, stock } = req.body;
@@ -75,7 +80,7 @@ router.post("/", async (req, res) => {
 
 });
 
-router.delete("/:id", async (req, res) =>{
+router.delete("/:id", AuthManager.auth, async (req, res) =>{
     const { id } = req.params;
     try{
 
@@ -92,7 +97,7 @@ router.delete("/:id", async (req, res) =>{
     }
 });
 
-router.get("/:id", async (req, res) =>{
+router.get("/:id", AuthManager.auth, async (req, res) =>{
     const { id } = req.params;
 
     try{
@@ -113,7 +118,7 @@ router.get("/:id", async (req, res) =>{
 
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", AuthManager.auth, async (req, res) => {
 
     const { id } = req.params;
 

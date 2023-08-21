@@ -22,7 +22,6 @@ export default class Products {
             sort: { price: (sort === "desc") ? -1 : 1 }
         };
 
-        //const respuesta = await productModel.paginate(query ? query : {}, options);
         const respuesta = await productModel.paginate(filter, options);
 
         return respuesta;

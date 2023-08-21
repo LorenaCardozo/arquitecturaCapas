@@ -74,7 +74,7 @@ export default class Carts {
         cart.products = [];
         let result = await cartModel.findByIdAndUpdate(cid,cart)
         
-        return result;
+        return result
     }
 
     

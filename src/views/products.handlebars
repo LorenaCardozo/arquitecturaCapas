@@ -1,0 +1,25 @@
+<div class="products-container">
+    <div class="products-header">
+        <h1>Bienvenido {{ userName }}</h1>
+        <p>Rol: {{ userRole }}</p>
+        <a href="/api/logout" class="logout-link">Cerrar sesión</a>
+    </div>
+    <h2>{{ Leyenda }}</h2>
+    <ul class="product-items">
+        {{#each productos}}
+        <li class="product-item">
+            <div class="product-info">
+                <h2 class="product-title">{{ this.title }}</h2>
+                <p class="product-description">{{ this.description }}</p>
+                <p class="product-price">Precio: ${{ this.price }}</p>
+                <p class="product-status">Estado: {{#if status}}Disponible{{else}}Agotado{{/if}}</p>
+            </div>
+            <div class="product-stock">
+                <p class="stock-label">Stock:</p>
+                <p class="stock-value">{{ this.stock }}</p>
+            </div>
+            <button class="add-to-cart-button">Agregar al carrito</button>
+        </li>
+        {{/each}}
+    </ul>
+</div>
