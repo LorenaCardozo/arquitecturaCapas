@@ -1,5 +1,6 @@
 import { Router, response } from "express";
-import userModel from "../models/users.model.js"
+import userModel from "../models/users.model.js";
+import { AuthManager } from "../classes/AuthManager.js";
 
 const router = Router();
 
@@ -14,14 +15,15 @@ router.post("/", async (req, res) => {
     if (email === "adminCoder@coder.com" && password === "adminCod3r123"){
         result = {username: "Admin", email: email, admin: true}
     }else{
-        result = await userModel.findOne({ email, password, });
+        result = await userModel.findOne({ email });
     }
-    
+
     if (result === null) {
         return res.status(401).json({
-            respuesta: "error",
+            respuesta: "error de autenticación",
         });
     } else {
+        if(!AuthManager.isInvalidPassword(result, password)) return res.status(401).send({status:"error", error:"Error. Revise los datos."});        
         console.log(result.username);
         req.session.username = result.username;
         req.session.email = email;

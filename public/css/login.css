@@ -101,3 +101,28 @@ button {
     padding: 5px 10px;
     cursor: pointer;
 }
+/* Estilo para el botón de GitHub */
+.github-login-button {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.github-login-button:hover {
+    background-color: #555;
+}
+
+/* Estilo para la imagen */
+.github-login-button img {
+    display: block;
+    max-width: 40px; /* Ajusta el tamaño máximo de la imagen */
+    margin: 0 auto 10px; /* Centra la imagen y agrega espacio inferior */
+    border-radius: 50px;
+}

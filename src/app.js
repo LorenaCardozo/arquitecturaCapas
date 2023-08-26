@@ -12,15 +12,23 @@ import productRouter from "./routes/products.router.js";
 import session from "express-session"
 //import FileStore from 'session-file-store';
 import MongoStore from 'connect-mongo';
+import passport from 'passport';
 
 import loginRouter from "./routes/login.router.js";
 import signupRouter from "./routes/signup.router.js";
 import logoutRouter from "./routes/logout.router.js";
+import sessionsRouter from "./routes/sessions.router.js";
+import initializePassport from './config/passport.config.js';
+
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8080;
 const MONGO_URI = process.env.MONGO_URI;
+
+//passport
+ initializePassport();
+app.use(passport.initialize()); 
 
 //Conexion a la base de datos
 
@@ -50,7 +58,6 @@ app.use(session({
 }));
 
 const pm = new ProductManager("productos.json")
-///const fileStore = FileStore(session);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -60,6 +67,7 @@ app.use("/api/signup", signupRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/products", productRouter);
 app.use("/api/logout", logoutRouter);
+app.use("/api/sessions", sessionsRouter);
 
 /*****SESSION***/
 /* app.use(session({

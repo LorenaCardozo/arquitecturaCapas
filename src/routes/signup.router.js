@@ -1,5 +1,6 @@
 import { Router, response } from "express";
 import userModel from "../models/users.model.js"
+import { AuthManager } from "../classes/AuthManager.js";
 
 const router = Router();
 
@@ -19,7 +20,7 @@ router.post("/", async (req, res) => {
     const result = await userModel.create({
         username,
         email,
-        password,
+        password: AuthManager.createHash(password) ,
     });
 
     if (result === null) {
