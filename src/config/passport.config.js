@@ -1,13 +1,15 @@
 import passport from "passport";
 import GitHubStrategy from "passport-github2";
 import userService from "../models/users.model.js"
+import * as dotenv from "dotenv";
+dotenv.config();
 
 const initializePassport = () => {
 
     passport.use('github', new GitHubStrategy(
         {
-            clientID: "Iv1.cfb3b02ec2720dad",
-            clientSecret: "5c9c40213c67744791c8e728e275ea9206853ad3",
+            clientID:  process.env.CLIENT_ID, 
+            clientSecret: process.env.CLIENT_SECRET, 
             callbackURL: "http://localhost:8080/api/sessions/githubcallback"
         }, async (accessToken, refreshToken, profile, done) => {
             try { 
@@ -17,7 +19,7 @@ const initializePassport = () => {
 
                 if (!user){
                     let newUser = {
-                        username: profile._json.name,
+                        username:  profile._json.name || profile._json.twitter_username || profile._json.email,
                         email: profile._json.email,
                         password:''
                     }
