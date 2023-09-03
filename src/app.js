@@ -3,14 +3,13 @@ import { Server } from 'socket.io';
 import { engine } from 'express-handlebars';
 import viewsRoute from './routes/view.router.js';
 import viewsRealTime from './routes/view.realtime.js';
-import { __filename, __dirname } from "./utils.js";
+import { __filename, __dirname, passportCall, authorization } from "./utils.js";
 import { ProductManager } from './ProductManager.js';
 import mongoose from "mongoose";
 import * as dotenv from "dotenv";
 import cartRouter from "./routes/carts.router.js";
 import productRouter from "./routes/products.router.js";
 import session from "express-session"
-//import FileStore from 'session-file-store';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
 
@@ -19,6 +18,7 @@ import signupRouter from "./routes/signup.router.js";
 import logoutRouter from "./routes/logout.router.js";
 import sessionsRouter from "./routes/sessions.router.js";
 import initializePassport from './config/passport.config.js';
+import cookieParser from 'cookie-parser';
 
 
 dotenv.config();
@@ -27,7 +27,11 @@ const PORT = process.env.PORT || 8080;
 const MONGO_URI = process.env.MONGO_URI;
 
 //passport
- initializePassport();
+app.use(express.static('public'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+initializePassport();
 app.use(passport.initialize()); 
 
 //Conexion a la base de datos
@@ -42,6 +46,7 @@ dbConnect.then(
     (error) => { console.log("Error en la conexión a la base de datos", error); }
 )
 
+
 // session
 app.use(session({
     store: MongoStore.create({
@@ -52,15 +57,18 @@ app.use(session({
         },
         ttl: 300,
     }),
-    secret: "codersecret",
+    secret: process.env.KEY_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+        httpOnly: true, 
+        maxAge: 3600 * 1000, 
+    },
 }));
 
-const pm = new ProductManager("productos.json")
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+const pm = new ProductManager("productos.json")
 
 app.use("/api/", loginRouter);
 app.use("/api/signup", signupRouter);
@@ -77,8 +85,6 @@ app.use("/api/sessions", sessionsRouter);
     saveUninitialized: true,
 })) */
 
-
-
 const httpServer = app.listen(PORT, () => {
     console.log("Servidor corriendo en puerto: " + PORT)
 })
@@ -90,6 +96,8 @@ app.set("views", `${__dirname}/views`);
 app.use(express.static("public"));
 app.use("/views", viewsRoute);
 app.use("/realtimeproducts", viewsRealTime);
+
+app.get('/current', passportCall('jwt'), authorization(), (req, res)=>{ res.send(req.user);})
 
 
 /* app.get("/", (req, res) => {
