@@ -1,12 +1,7 @@
 import express from 'express';
-import { Server } from 'socket.io';
 import { engine } from 'express-handlebars';
-import viewsRoute from './routes/view.router.js';
-import viewsRealTime from './routes/view.realtime.js';
 import { __filename, __dirname, passportCall, authorization } from "./utils.js";
-import { ProductManager } from './ProductManager.js';
 import mongoose from "mongoose";
-import * as dotenv from "dotenv";
 import cartRouter from "./routes/carts.router.js";
 import productRouter from "./routes/products.router.js";
 import session from "express-session"
@@ -20,11 +15,10 @@ import sessionsRouter from "./routes/sessions.router.js";
 import initializePassport from './config/passport.config.js';
 import cookieParser from 'cookie-parser';
 
+import { MONGO_URI, PORT, KEY_SECRET } from './config/config.js';
 
-dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 8080;
-const MONGO_URI = process.env.MONGO_URI;
+const PUERTO = PORT || 8080;
 
 //passport
 app.use(express.static('public'));
@@ -35,7 +29,6 @@ initializePassport();
 app.use(passport.initialize()); 
 
 //Conexion a la base de datos
-
 let dbConnect = mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -46,18 +39,16 @@ dbConnect.then(
     (error) => { console.log("Error en la conexión a la base de datos", error); }
 )
 
-
-// session
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URI,
+        mongoUrl: MONGO_URI,
         mongoOptions: {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         },
         ttl: 300,
     }),
-    secret: process.env.KEY_SECRET,
+    secret: KEY_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -67,9 +58,6 @@ app.use(session({
 }));
 
 
-
-const pm = new ProductManager("productos.json")
-
 app.use("/api/", loginRouter);
 app.use("/api/signup", signupRouter);
 app.use("/api/carts", cartRouter);
@@ -77,16 +65,9 @@ app.use("/api/products", productRouter);
 app.use("/api/logout", logoutRouter);
 app.use("/api/sessions", sessionsRouter);
 
-/*****SESSION***/
-/* app.use(session({
-    store: new fileStore({ path: __dirname + "/sessions", ttl: 100, retries: 0, }),
-    secret: "codersecret",
-    resave: true,
-    saveUninitialized: true,
-})) */
 
-const httpServer = app.listen(PORT, () => {
-    console.log("Servidor corriendo en puerto: " + PORT)
+const httpServer = app.listen(PUERTO, () => {
+    console.log("Servidor corriendo en puerto: " + PUERTO)
 })
 
 app.engine('handlebars', engine());
@@ -94,61 +75,7 @@ app.set('view engine', 'handlebars');
 app.set("views", `${__dirname}/views`);
 
 app.use(express.static("public"));
-app.use("/views", viewsRoute);
-app.use("/realtimeproducts", viewsRealTime);
 
 app.get('/current', passportCall('jwt'), authorization(), (req, res)=>{ res.send(req.user);})
 
-
-/* app.get("/", (req, res) => {
-    res.send("Hola Mundo!");
-})
-
-
-app.get('/', (req, res) => {
-    res.render('Home');
-}); */
-
-
-/*
-
-app.get("/logout", (req, res) => {
-    req.session.destroy(err => {
-        if (!err) {
-            res.send("Logout ok!")
-        } else {
-            res.json({ status: "Error al cerrar sesión", body: err })
-        }
-    })
-
-})
-*/
-
-/****SOCKET***/
-const socketServer = new Server(httpServer);
-
-// Establecer la conexión con Socket.IO
-socketServer.on('connection', (socket) => {
-    console.log('Cliente conectado');
-
-    socket.on('mensaje', (data) => {
-        console.log('Mensaje recibido:', data);
-        socket.emit('mensaje', data); // Enviar el mensaje a todos los clientes conectados
-    });
-
-    socket.on('disconnect', () => {
-        console.log('Cliente desconectado');
-    });
-
-    socket.on('agregarProducto', (data) => {
-        pm.addProduct(data.title, data.description, data.price, data.thumbnail, data.code, data.stock, data.category, true)
-        socket.emit('okProducto', data); // Enviar el mensaje a todos los clientes conectados
-    });
-
-    socket.on('eliminarProducto', (data) => {
-        pm.deleteProductByCode(data)
-        socket.emit('okDelete', data);
-    });
-
-});
 

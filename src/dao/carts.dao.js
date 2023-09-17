@@ -1,5 +1,5 @@
-import cartModel from "../../models/carts.models.js";
-import Products from "./products.js";
+import cartModel from "./mongo/models/carts.models.js";
+import Products from "./products.dao.js";
 
 const products = new Products();
 
@@ -31,8 +31,6 @@ export default class Carts {
         let products = cart.products
 
         let indexProd = products.findIndex((p) => p.productId.toString() === pid)
-
-        console.log(products, indexProd);
 
         if (indexProd !== -1) {
             products.splice(indexProd, 1)

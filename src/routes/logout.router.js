@@ -1,12 +1,8 @@
-import { Router, response } from "express";
+import { Router } from "express";
+import { logout } from "../controller/logout.controller.js";
 
 const router = Router();
 
-router.get("/", (req, res) => {
-
-    res.clearCookie('coderCookieToken');
-    res.redirect('/api')
-
-})
+router.get("/", logout)
 
 export default router;

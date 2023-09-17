@@ -1,10 +1,9 @@
 import passport from "passport";
 import GitHubStrategy from "passport-github2";
-import userService from "../models/users.model.js"
-import * as dotenv from "dotenv";
+import userService from "../dao/mongo/models/users.model.js";
 import jwt from "passport-jwt";
+import { KEY_SECRET, CLIENT_ID, CLIENT_SECRET, CALLBACK_URL } from "../config/config.js"
 
-dotenv.config();
 
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
@@ -21,7 +20,7 @@ const initializePassport = () => {
 
     passport.use('jwt', new JWTStrategy({
         jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
-        secretOrKey: process.env.KEY_SECRET,
+        secretOrKey: KEY_SECRET,
     }, async (jwt_payload, done) => {
         try {
             return done(null, jwt_payload);
@@ -35,9 +34,9 @@ const initializePassport = () => {
 
     passport.use('github', new GitHubStrategy(
         {
-            clientID: process.env.CLIENT_ID,
-            clientSecret: process.env.CLIENT_SECRET,
-            callbackURL: process.env.CALLBACK_URL
+            clientID: CLIENT_ID,
+            clientSecret: CLIENT_SECRET,
+            callbackURL: CALLBACK_URL
         }, async (accessToken, refreshToken, profile, done) => {
             try {
                 let user = await userService.findOne({ email: profile._json.email });

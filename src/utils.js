@@ -2,9 +2,8 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import passport from 'passport';
 import jwt  from 'jsonwebtoken';
-import * as dotenv from "dotenv";
+import { KEY_SECRET } from './config/config.js';
 
-dotenv.config();
 
 export const __filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(__filename);
@@ -25,14 +24,12 @@ export const passportCall = (strategy) =>{
 export const authorization = () => {
 
     return async(req, res, next)=> {
-        console.log(req.user)
         if(!req.user) return res.status(401).send({error:"Unauthorizes"})
-        //if(req.user.role!= role) return res.status(403).send({error: "No permissions"});
         next();
     }
 }
 
-const secretKey = process.env.KEY_SECRET;
+const secretKey = KEY_SECRET;
 
 // Función para generar un token JWT
 export const generarToken = (payload) => {
