@@ -24,15 +24,17 @@ async function login (req, res){
 
         const token = generarToken({ email: result.email, username: result.username, admin: result.admin, role: result.role });
 
-        const cookieOptions = {
-            httpOnly: true,
-            maxAge: 3600 * 1000, 
-        };
-        const cookieValue = cookie.serialize('coderCookieToken', token, cookieOptions);
+       // Configura las cookies individualmente
+const cookieOptions = {
+    httpOnly: true,
+    maxAge: 3600 * 1000, 
+};
 
-        res.setHeader('Set-Cookie', cookieValue);
+const tokenCookie = cookie.serialize('coderCookieToken', token, cookieOptions);
 
-        res.redirect('/api/products')
+res.setHeader('Set-Cookie', tokenCookie);
+
+res.redirect('/api/products');
     }
 }
 

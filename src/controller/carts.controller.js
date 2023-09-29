@@ -28,7 +28,7 @@ async function getId(req, res){
 
         let leyenda = result[0].products.length ? "Contenido del carrito de compras" : "Carrito vacío"
 
-        res.render("carts", { leyenda: leyenda, productos: result[0].products })
+        res.render("carts", { leyenda: leyenda, productos: result[0].products, cartId: id })
 
     } catch (error) {
         console.log(error);
@@ -44,10 +44,11 @@ async function save(req, res){
     try {
         const p = { products: [] }
         const result = await carts.save(p);
-        res.json({
+        return result
+        /*res.json({
             data: result,
             message: "Carrito creado exitosamente",
-        })
+        })*/
 
     }
     catch (error) {
@@ -134,4 +135,20 @@ async function deleteId(req, res){
     
 }
 
-export {getAll, getId, save, saveProduc, deleteProduc, update, updateId, deleteId}
+async function purchase(req, res) {
+    try {
+        const { cid } = req.params;
+        const email = req.user.email;
+
+        const result = await carts.FinalizarCompra(cid, email);
+
+        console.log("CODERHOUSE", result);
+
+        // Redirige a la pantalla de resultados
+        res.redirect('/api/resultados');
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export {getAll, getId, save, saveProduc, deleteProduc, update, updateId, deleteId, purchase}

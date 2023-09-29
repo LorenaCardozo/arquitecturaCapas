@@ -1,11 +1,15 @@
 <div>
     <h1>{{ leyenda }}</h1>
+    <h3 class="user-cart" user-cart={{usercart}}>{{ leyenda }}</h3>
     <ul>
         {{#each productos}}
         <li>
                 Producto: {{ this.productId.title }} - 
-                Cantidad: {{ this.quantity }}            
+                Cantidad: {{ this.quantity }} -
+                Precio: ${{this.productId.price}}           
         </li>
         {{/each}}
     </ul>
+    <button>Seguir Comprando</button>
+    <button class="cart-purchase" data-cart-id="{{ cartId }}">Finalizar Compra</button>
 </div>

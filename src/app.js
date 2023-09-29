@@ -1,6 +1,6 @@
 import express from 'express';
 import { engine } from 'express-handlebars';
-import { __filename, __dirname, passportCall, authorization } from "./utils.js";
+import { __filename, __dirname} from "./utils.js";
 import mongoose from "mongoose";
 import cartRouter from "./routes/carts.router.js";
 import productRouter from "./routes/products.router.js";
@@ -12,6 +12,8 @@ import loginRouter from "./routes/login.router.js";
 import signupRouter from "./routes/signup.router.js";
 import logoutRouter from "./routes/logout.router.js";
 import sessionsRouter from "./routes/sessions.router.js";
+import currentRouter from "./routes/current.router.js";
+import resultadoRouter from "./routes/resultado.router.js";
 import initializePassport from './config/passport.config.js';
 import cookieParser from 'cookie-parser';
 
@@ -64,7 +66,8 @@ app.use("/api/carts", cartRouter);
 app.use("/api/products", productRouter);
 app.use("/api/logout", logoutRouter);
 app.use("/api/sessions", sessionsRouter);
-
+app.use("/current", currentRouter);
+app.get('/api/resultados', resultadoRouter);
 
 const httpServer = app.listen(PUERTO, () => {
     console.log("Servidor corriendo en puerto: " + PUERTO)
@@ -76,6 +79,10 @@ app.set("views", `${__dirname}/views`);
 
 app.use(express.static("public"));
 
-app.get('/current', passportCall('jwt'), authorization(), (req, res)=>{ res.send(req.user);})
+//app.get('/current', passportCall('jwt'), authorization(), (req, res)=>{ res.send(req.user);})
 
 
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  });

@@ -27,11 +27,16 @@ async function getAll(req, res) {
 
         const userName = req.user.username
         const userRole = req.user.role;
+        const admin = req.user.admin;
+        const cartId = req.user.cart._id;
+        const email = req.user.email;
 
         const result = await products.getAll(limit, page, sort, query);
         const plainProducts = result.docs.map(doc => doc.toObject());
 
-        res.render("products", { Leyenda: "Lista de productos", productos: plainProducts, userName: userName, userRole: userRole });
+       // console.log("PRODUCTOS", plainProducts);
+
+        res.render("products", { Leyenda: "Lista de productos", productos: plainProducts, userName: userName, userRole: userRole, admin: admin, cartId: cartId, email: email });
     } catch (error) {
         res.status(500).json({
             message: "Error al obtener los productos",
@@ -103,7 +108,7 @@ async function getId(req, res) {
     }
 }
 
-async function update(req, res){
+async function update(req, res) {
     const { id } = req.params;
 
     try {

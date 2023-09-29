@@ -4,8 +4,16 @@
         <p>Rol: {{ userRole }}</p>
         <a href="/api/logout" class="logout-link">Cerrar sesión</a>
     </div>
+
+    <!-- Agregar el botón "Administrar Productos" solo para el rol de administrador -->
+    {{#if admin}}
+    <button id="add-products">Administrar Productos</button>
+    {{else}}
+
+    <button class="cart-button"  data-cart-id="{{ cartId }}"> Ir al carrito</button>
     <h2>{{ Leyenda }}</h2>
     <ul class="product-items">
+
         {{#each productos}}
         <li class="product-item">
             <div class="product-info">
@@ -18,8 +26,11 @@
                 <p class="stock-label">Stock:</p>
                 <p class="stock-value">{{ this.stock }}</p>
             </div>
-            <button class="add-to-cart-button">Agregar al carrito</button>
+            <button class="add-to-cart-button" data-product-id="{{ this._id }}">Agregar al carrito</button>
+
         </li>
         {{/each}}
     </ul>
+    {{/if}}
+
 </div>
