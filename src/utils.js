@@ -29,6 +29,22 @@ export const authorization = () => {
     }
 }
 
+export const authorizationUser = () => {
+
+    return async(req, res, next)=> {
+        if(!req.user || req.user.role !=='user') return res.status(401).send({error:"Unauthorizes"})
+        next();
+    }
+}
+
+export const authorizationAdmin = () => {
+
+    return async(req, res, next)=> {
+        if(!req.user || req.user.role !=='admin') return res.status(401).send({error:"Unauthorizes"})
+        next();
+    }
+}
+
 const secretKey = KEY_SECRET;
 
 // Función para generar un token JWT
@@ -45,7 +61,7 @@ export async function loadCart(req, res, next) {
              // Agregar el carrito a req para que esté disponible en getAll
             req.user.cart = await save();
         }
-        //console.log("AQUI RESULTADO", req.user)
+
         next();
 
     } catch (error) {

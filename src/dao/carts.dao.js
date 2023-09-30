@@ -146,6 +146,8 @@ export default class Carts {
 
         }
 
+        await this.update(cid, productsCompra)
+
         // Si todos los productos tienen suficiente stock, crea un nuevo ticket
         const ticketData = {
             // Define los datos del ticket según el modelo

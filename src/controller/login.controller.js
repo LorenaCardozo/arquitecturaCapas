@@ -24,6 +24,9 @@ async function login (req, res){
 
         const token = generarToken({ email: result.email, username: result.username, admin: result.admin, role: result.role });
 
+        req.session.username = result.username;
+        req.session.email = result.email;
+
        // Configura las cookies individualmente
 const cookieOptions = {
     httpOnly: true,

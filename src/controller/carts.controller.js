@@ -137,8 +137,9 @@ async function deleteId(req, res){
 
 async function purchase(req, res) {
     try {
+
         const { cid } = req.params;
-        const email = req.user.email;
+        const email = req.session.email;
 
         const result = await carts.FinalizarCompra(cid, email);
 
@@ -148,7 +149,7 @@ async function purchase(req, res) {
 
         // Redirige a la pantalla de resultados
         res.redirect('/api/resultado');
-        
+
     } catch (error) {
         console.log(error);
     }

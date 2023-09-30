@@ -2,6 +2,8 @@ import { generarToken } from "../utils.js";
 
 async function sessionGithub(req, res){
     req.session.username = req.user.username;
+    req.session.email = req.user.email;
+
     const accessToken = generarToken({username: req.user.username, role:"user"});
 
     res.cookie('coderCookieToken', accessToken, { httpOnly: true, secure: true });

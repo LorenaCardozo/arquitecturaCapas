@@ -24,7 +24,6 @@ async function ComprarCarrito(event) {
     const cartButton = event.target;
     const cid = cartButton.getAttribute('data-cart-id');
 
-    console.log("COMPRANDOOOOOO", cid)    
     if (cid) {
         // Redirigir al usuario al carrito utilizando el cartId
         //window.location.href = `/api/carts/${cid}/purchase`;
