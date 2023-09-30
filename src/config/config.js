@@ -10,5 +10,7 @@ export const CALLBACK_URL = process.env.CALLBACK_URL
 export const ADM_EMAIL = process.env.ADM_EMAIL
 export const ADM_PASS = process.env.ADM_PASS
 export const KEY_SECRET = process.env.KEY_SECRET
+export const MAIL = process.env.MAIL
+export const MAIL_PASS = process.env.MAIL_PASS
 
 

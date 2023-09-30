@@ -2,6 +2,7 @@ import { json } from "express";
 import cartModel from "./mongo/models/carts.models.js";
 import Products from "./products.dao.js";
 import ticketModel from './mongo/models/tickets.models.js';
+import { enviarCorreo } from "../utils.js";
 
 
 const products = new Products();
@@ -157,6 +158,8 @@ export default class Carts {
 
         // Crea el ticket en la base de datos
         const nuevoTicket = await ticketModel.create(ticketData);
+
+        enviarCorreo(email, "Gracias por tu compra!!", "Tu pedido ya ha sido procesado.")
 
         return {
             message: "Compra exitosa, se ha generado un ticket",
