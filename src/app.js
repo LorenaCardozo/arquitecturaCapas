@@ -1,6 +1,6 @@
 import express from 'express';
 import { engine } from 'express-handlebars';
-import { __filename, __dirname} from "./utils.js";
+import { __filename, __dirname } from "./utils.js";
 import mongoose from "mongoose";
 import cartRouter from "./routes/carts.router.js";
 import productRouter from "./routes/products.router.js";
@@ -28,7 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 initializePassport();
-app.use(passport.initialize()); 
+app.use(passport.initialize());
 
 //Conexion a la base de datos
 let dbConnect = mongoose.connect(MONGO_URI, {
@@ -54,8 +54,8 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        httpOnly: true, 
-        maxAge: 3600 * 1000, 
+        httpOnly: true,
+        maxAge: 3600 * 1000,
     },
 }));
 
@@ -67,7 +67,7 @@ app.use("/api/products", productRouter);
 app.use("/api/logout", logoutRouter);
 app.use("/api/sessions", sessionsRouter);
 app.use("/current", currentRouter);
-app.get('/api/resultados', resultadoRouter);
+app.use("/api/resultado", resultadoRouter);
 
 const httpServer = app.listen(PUERTO, () => {
     console.log("Servidor corriendo en puerto: " + PUERTO)
@@ -85,4 +85,4 @@ app.use(express.static("public"));
 app.use((err, req, res, next) => {
     console.error(err);
     res.status(500).json({ message: 'Error interno del servidor' });
-  });
+});

@@ -133,12 +133,14 @@ export default class Carts {
         let TotalCompra = 0;
         // Verifica si dentro del carrito hay productos con stock suficiente
         const productosConStockInsuficiente = [];
+        const productsCompra = [];
         for (const product of cart.products) {
             const prod = await products.getById(product.productId);
             if (!prod || prod[0].stock < product.quantity) {
-                productosConStockInsuficiente.push(product);
+                productosConStockInsuficiente.push({title:prod[0].title, quantity: product.quantity});
             } else {
                 TotalCompra += product.quantity * prod[0].price;
+                productsCompra.push({productName: prod[0].title, quantity: product.quantity, unitPrice:prod[0].price, total: product.quantity * prod[0].price})
 
             }
 
@@ -152,12 +154,13 @@ export default class Carts {
         };
 
         // Crea el ticket en la base de datos
-        const nuevoTicket = ticketModel.create(ticketData);
+        const nuevoTicket = await ticketModel.create(ticketData);
 
         return {
             message: "Compra exitosa, se ha generado un ticket",
             ticket: nuevoTicket, 
             productosSinStock: productosConStockInsuficiente,
+            products: productsCompra,
         };
 
     }

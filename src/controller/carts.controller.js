@@ -142,10 +142,13 @@ async function purchase(req, res) {
 
         const result = await carts.FinalizarCompra(cid, email);
 
-        console.log("CODERHOUSE", result);
+        req.session.ticket = result.ticket;
+        req.session.productosSinStock = result.productosSinStock;
+        req.session.products = result.products;
 
         // Redirige a la pantalla de resultados
-        res.redirect('/api/resultados');
+        res.redirect('/api/resultado');
+        
     } catch (error) {
         console.log(error);
     }

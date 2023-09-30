@@ -1,0 +1,34 @@
+<div>
+    <h1>Gracias por su compra!!!</h1>
+
+    {{#if faltantes.length}}
+    <h2>Productos Sin Stock</h2>
+    <ul>
+        {{#each faltantes}}
+        <li>{{this.title}} - Cantidad: {{this.quantity}}</li>
+        {{/each}}
+    </ul>
+    {{else}}
+    <p>No hay productos sin stock.</p>
+    {{/if}}
+
+    <h2>Ticket de Compra: {{ticketCode}}</h2>
+    <table>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Total</th>
+        </tr>
+        {{#each productosCompra}}
+        <tr>
+            <td>{{this.productName}}</td>
+            <td>{{this.quantity}}</td>
+            <td>${{this.unitPrice}}</td>
+            <td>${{this.total}}</td>
+        </tr>
+        {{/each}}
+    </table>
+
+    <p>Total de la Compra: ${{totalAmount}}</p>
+</div>

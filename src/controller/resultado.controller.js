@@ -1,30 +1,24 @@
 async function getResultado(req, res) {
     try {
-        /*const limit = parseInt(req.query.limit) || 10; // Obtener el límite de la consulta
-        const page = parseInt(req.query.page) || 1; // Obtener la pagina de la consulta
-        const sort = req.query.sort;
-        const query = req.query.query;
+        // Obtén los productos sin stock de la sesión
+        const productosSinStock = req.session.productosSinStock || [];
+        const productosCompra = req.session.products || [];
 
-        const userName = req.user.username
-        const userRole = req.user.role;
-        const admin = req.user.admin;
-        const cartId = req.user.cart._id;
-        const email = req.user.email;
+        const total = req.session.ticket.amount;
+        const ticketCode = req.session.ticket.code
 
-        const result = await products.getAll(limit, page, sort, query);
-        const plainProducts = result.docs.map(doc => doc.toObject());
+        res.render("resultado", { leyenda: "Faltan productos", faltantes: productosSinStock, ticket: req.session.ticket, productosCompra: productosCompra, totalAmount: total, ticketCode: ticketCode});
 
-       // console.log("PRODUCTOS", plainProducts);
-
-        res.render("products", { Leyenda: "Lista de productos", productos: plainProducts, userName: userName, userRole: userRole, admin: admin, cartId: cartId, email: email });*/
-
-        console.log('MOSTRAR RESULTADO', req);
     } catch (error) {
-        res.status(500).json({
-            message: "Error al obtener los productos",
+        console.log(error);
+        res.json({
+            message: "Error al obtener el carrito",
             error: error,
         });
+
     }
 }
 
-export {getResultado}
+export { getResultado };
+
+
