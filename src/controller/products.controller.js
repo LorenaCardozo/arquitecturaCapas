@@ -1,16 +1,17 @@
 import Products from "../dao/products.dao.js";
+import { customizeError } from "../service/customizeErrors.js";
+import { generateProductErrorInfo } from "../service/info.js";
 
 const products = new Products();
 
 const camposCompletos = (product) => {
+
     if (
-        product.title === '' || product.title === 'undefined' ||
-        product.description === '' || product.description === 'undefined' ||
-        product.price === '' || product.price === 'undefined' ||
-        product.thumbnail === '' || product.thumbnail === 'undefined' ||
-        product.code === '' || product.code === 'undefined' ||
-        product.stock === '' || product.stock === 'undefined' ||
-        product.category === '' || product.category === 'undefined'
+        !product.title || product.title === '' || product.title === 'undefined' ||
+        !product.description ||product.description === '' || product.description === 'undefined' ||
+        !product.price || product.price === '' || product.price === 'undefined' ||
+        !product.code || product.code === '' || product.code === 'undefined' ||
+        !product.stock || product.stock === '' || product.stock === 'undefined' 
     ) {
         return false;
     }
@@ -34,6 +35,8 @@ async function getAll(req, res) {
         const result = await products.getAll(limit, page, sort, query);
         const plainProducts = result.docs.map(doc => doc.toObject());
 
+        //console.log("ESTOS SON LOS PRODUCTOS", plainProducts)
+
        // console.log("PRODUCTOS", plainProducts);
 
         res.render("products", { Leyenda: "Lista de productos", productos: plainProducts, userName: userName, userRole: userRole, admin: admin, cartId: cartId, email: email });
@@ -48,10 +51,9 @@ async function save(req, res) {
     try {
         const { title, description, code, price, status, stock } = req.body;
 
-        if (!camposCompletos(req.body)) {
-            return res.status(400).json({
-                message: "Faltan datos requeridos"
-            })
+        if (!camposCompletos({ title, description, code, price, status, stock })) {
+
+            return res.status(400).json(customizeError('missingRequiredDataProduct', generateProductErrorInfo({title, description, code, price, stock})) )
         } else {
             const p = { title, description, code, price, status, stock }
             const result = await products.save(p)
@@ -115,9 +117,7 @@ async function update(req, res) {
         const { title, description, code, price, status, stock } = req.body;
 
         if (!camposCompletos(req.body) || !id) {
-            return res.status(400).json({
-                message: "Faltan datos requeridos"
-            })
+            return res.status(400).json(customizeError('missingRequiredDataProduct', generateProductErrorInfo({title, description, code, price, stock})) )
         } else {
             const p = { title, description, code, price, status, stock }
             const result = await products.update(id, p);

@@ -18,6 +18,7 @@ import initializePassport from './config/passport.config.js';
 import cookieParser from 'cookie-parser';
 
 import { MONGO_URI, PORT, KEY_SECRET } from './config/config.js';
+import MockingProductsRouters from './routes/mockingproducts.router.js';
 
 const app = express();
 const PUERTO = PORT || 8080;
@@ -68,6 +69,7 @@ app.use("/api/logout", logoutRouter);
 app.use("/api/sessions", sessionsRouter);
 app.use("/current", currentRouter);
 app.use("/api/resultado", resultadoRouter);
+app.use("/mockingproducts", MockingProductsRouters)
 
 const httpServer = app.listen(PUERTO, () => {
     console.log("Servidor corriendo en puerto: " + PUERTO)
