@@ -10,7 +10,7 @@ async function getResultado(req, res) {
         res.render("resultado", { leyenda: "Faltan productos", faltantes: productosSinStock, ticket: req.session.ticket, productosCompra: productosCompra, totalAmount: total, ticketCode: ticketCode});
 
     } catch (error) {
-        console.log(error);
+        req.logger.error("Error al obtener el carrito");
         res.json({
             message: "Error al obtener el carrito",
             error: error,

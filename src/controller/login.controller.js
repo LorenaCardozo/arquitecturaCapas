@@ -1,6 +1,6 @@
 import userModel from "../dao/mongo/models/users.model.js";
 import { AuthManager } from "../classes/AuthManager.js";
-import { generarToken } from "../utils.js";
+import { generarToken } from "../utils/utils.js";
 import cookie from 'cookie'; 
 import { ADM_EMAIL, ADM_PASS } from "../config/config.js";
 

@@ -8,7 +8,6 @@ function customizeError(errorCode, additionalMessage = '') {
 
     error.code = errorCode;
 
-    console.log("ERROR", error.message)
     return {code: error.code, message: error.message} ;
 }
 

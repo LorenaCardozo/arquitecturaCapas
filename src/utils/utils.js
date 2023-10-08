@@ -1,12 +1,14 @@
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
-import { KEY_SECRET, MAIL, MAIL_PASS } from './config/config.js';
-import { save } from "./controller/carts.controller.js";
+import { KEY_SECRET, MAIL, MAIL_PASS } from '../config/config.js';
+import { save } from "../controller/carts.controller.js";
 
 export const __filename = fileURLToPath(import.meta.url);
-export const __dirname = dirname(__filename);
+const parentDir =  dirname(__filename);
+//export const __dirname = dirname(__filename);
+export const __dirname = join(parentDir, '..');
 
 export const passportCall = (strategy) => {
 

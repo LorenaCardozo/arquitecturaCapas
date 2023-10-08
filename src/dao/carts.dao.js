@@ -1,8 +1,7 @@
-import { json } from "express";
 import cartModel from "./mongo/models/carts.models.js";
 import Products from "./products.dao.js";
 import ticketModel from './mongo/models/tickets.models.js';
-import { enviarCorreo } from "../utils.js";
+import { enviarCorreo } from "../utils/utils.js";
 
 
 const products = new Products();
@@ -31,7 +30,7 @@ export default class Carts {
             .populate('products.productId') // Aquí especificamos el campo y, opcionalmente, excluimos el campo _id
             .lean(); // Usamos exec() para ejecutar la consulta
 
-        console.log(JSON.stringify(respuesta));
+        //console.log(JSON.stringify(respuesta));
         return respuesta;
     }
 

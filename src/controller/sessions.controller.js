@@ -1,4 +1,4 @@
-import { generarToken } from "../utils.js";
+import { generarToken } from "../utils/utils.js";
 
 async function sessionGithub(req, res){
     req.session.username = req.user.username;

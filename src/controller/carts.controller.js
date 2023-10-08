@@ -15,7 +15,8 @@ async function getAll(req, res){
         );
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
+        req.logger.error(error)
     }
 
 }
@@ -31,7 +32,8 @@ async function getId(req, res){
         res.render("carts", { leyenda: leyenda, productos: result[0].products, cartId: id })
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
+        req.logger.error(error)
         res.json({
             message: "Error al obtener el carrito",
             error: error,
@@ -52,6 +54,7 @@ async function save(req, res){
 
     }
     catch (error) {
+        req.logger.error(error)
         res.status(500).json({
             data: [],
             message: "Error al dar de alta el carrito",
@@ -66,10 +69,11 @@ async function saveProduc (req, res){
         const { cid, pid } = req.params
 
         const response = await carts.addProductToCart(cid, pid)
+        req.logger.info({ message: "El producto se agrego correctamente al carrito", data: response })
         res.json({ message: "El producto se agrego correctamente al carrito", data: response })
     }
     catch (err) {
-        console.log(err)
+        req.logger.error(error)
         res.status(500).json({ message: "Error al intentar agregar el producto al carrito :(", error: err })
     }
 }
@@ -81,15 +85,17 @@ async function deleteProduc (req, res){
         const response = await carts.delete(cid, pid)
 
         if (response != -1) {
+            req.logger.info({ message: "El producto se eliminó correctamente del carrito", data: response })
             res.json({ message: "El producto se eliminó correctamente del carrito", data: response })
         }
         else {
+            req.logger.info({ message: "El producto no pudo ser eliminado. Verifique los datos", data: response })
             res.json({ message: "El producto no pudo ser eliminado. Verifique los datos", data: response })
         }
 
     }
     catch (err) {
-        console.log(err)
+        req.logger.error(error)
         res.status(500).json({ message: "Algo salío mal al intentar eliminar el producto del carrito :(", error: err })
     }
 }
@@ -103,7 +109,7 @@ async function update(req, res){
         res.json({ message: "Se agregaron los productos al carrito", data: response })
     }
     catch (err) {
-        console.log(err)
+        req.logger.error(error)
         res.status(500).json({ message: "Error al intentar actualizar carrito :(", error: err })
     }
 }
@@ -116,7 +122,7 @@ async function updateId(req, res){
         res.json({ message: "Se modificó la cantidad del producto en el carrito", data: response })
     }
     catch(err){
-        console.log(err)
+        req.logger.error(error)
         res.status(500).json({ message: "Error al intentar actualizar la cantidad del producto en el carrito :(", error: err })
     }
 }
@@ -129,7 +135,7 @@ async function deleteId(req, res){
         res.status(200).json({ message: "Se ha vaciado el carrito." })
     }
     catch(err){
-        console.log(err)
+        req.logger.error(error)
         res.status(500).json({ message: "Error al intentar vaciar el carrito", error: err })
     }
     
@@ -151,7 +157,7 @@ async function purchase(req, res) {
         res.redirect('/api/resultado');
 
     } catch (error) {
-        console.log(error);
+        req.logger.error(error)
     }
 }
 

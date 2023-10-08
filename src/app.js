@@ -1,6 +1,6 @@
 import express from 'express';
 import { engine } from 'express-handlebars';
-import { __filename, __dirname } from "./utils.js";
+import { __filename, __dirname } from "./utils/utils.js";
 import mongoose from "mongoose";
 import cartRouter from "./routes/carts.router.js";
 import productRouter from "./routes/products.router.js";
@@ -19,6 +19,10 @@ import cookieParser from 'cookie-parser';
 
 import { MONGO_URI, PORT, KEY_SECRET } from './config/config.js';
 import MockingProductsRouters from './routes/mockingproducts.router.js';
+import { addLogger } from './utils/logger.js';
+
+
+
 
 const app = express();
 const PUERTO = PORT || 8080;
@@ -30,6 +34,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 initializePassport();
 app.use(passport.initialize());
+
+app.use(addLogger);
 
 //Conexion a la base de datos
 let dbConnect = mongoose.connect(MONGO_URI, {
@@ -71,6 +77,16 @@ app.use("/current", currentRouter);
 app.use("/api/resultado", resultadoRouter);
 app.use("/mockingproducts", MockingProductsRouters)
 
+app.get("/loggerTest", (req, res) => {
+    req.logger.debug("Este es un mensaje de depuración"); 
+    req.logger.http("Este es un mensaje HTTP"); 
+    req.logger.info("Este es un mensaje de información"); 
+    req.logger.warning("Este es un mensaje de advertencia"); 
+    req.logger.error("Este es un mensaje de error"); 
+    req.logger.fatal("Este es un mensaje fatal"); 
+    res.send({ message: "Prueba de logger!" });
+});
+
 const httpServer = app.listen(PUERTO, () => {
     console.log("Servidor corriendo en puerto: " + PUERTO)
 })
@@ -85,6 +101,6 @@ app.use(express.static("public"));
 
 
 app.use((err, req, res, next) => {
-    console.error(err);
+    console.log(err)
     res.status(500).json({ message: 'Error interno del servidor' });
 });

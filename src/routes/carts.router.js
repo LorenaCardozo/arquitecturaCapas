@@ -1,6 +1,6 @@
 import { Router} from "express";
 import { deleteId, deleteProduc, getAll, getId, save, saveProduc, update, updateId, purchase } from "../controller/carts.controller.js";
-import { authorization, authorizationUser, passportCall } from "../utils.js";
+import { authorization, authorizationUser, passportCall } from "../utils/utils.js";
 
 const router = Router();
 

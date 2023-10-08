@@ -41,6 +41,7 @@ async function getAll(req, res) {
 
         res.render("products", { Leyenda: "Lista de productos", productos: plainProducts, userName: userName, userRole: userRole, admin: admin, cartId: cartId, email: email });
     } catch (error) {
+        req.logger.error("Error al obtener los productos")
         res.status(500).json({
             message: "Error al obtener los productos",
             error: error,
@@ -57,6 +58,7 @@ async function save(req, res) {
         } else {
             const p = { title, description, code, price, status, stock }
             const result = await products.save(p)
+            req.logger.info("Producto creado exitosamente")
             res.json({
                 data: result,
                 message: "Producto creado exitosamente",
@@ -65,6 +67,7 @@ async function save(req, res) {
         }
     }
     catch (error) {
+        req.logger.error(error)
         res.status(500).json({
             data: [],
             message: "Error al dar de alta el producto",
@@ -84,6 +87,7 @@ async function deleteId(req, res) {
             message: "Producto eliminado exitosamente"
         })
     } catch (error) {
+        req.logger.error(error)
         res.status(500).json({
             message: "Error al eliminar el producto",
             error: error,
@@ -102,6 +106,7 @@ async function getId(req, res) {
         })
 
     } catch (error) {
+        req.logger.error(error)
         res.json({
             message: "Error al obtener el producto",
             error: error,
@@ -129,6 +134,7 @@ async function update(req, res) {
         }
     }
     catch (error) {
+        req.logger.error(error)
         res.status(500).json({
             data: [],
             message: "Error al modificar el producto",
