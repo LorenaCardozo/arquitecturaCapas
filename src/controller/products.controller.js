@@ -51,12 +51,13 @@ async function getAll(req, res) {
 async function save(req, res) {
     try {
         const { title, description, code, price, status, stock } = req.body;
+        const owner = req.user.role==='admin'?req.user.role:req.user.email;
 
         if (!camposCompletos({ title, description, code, price, status, stock })) {
 
             return res.status(400).json(customizeError('missingRequiredDataProduct', generateProductErrorInfo({title, description, code, price, stock})) )
         } else {
-            const p = { title, description, code, price, status, stock }
+            const p = { title, description, code, price, status, stock,  owner}
             const result = await products.save(p)
             req.logger.info("Producto creado exitosamente")
             res.json({

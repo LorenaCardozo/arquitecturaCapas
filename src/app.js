@@ -14,15 +14,15 @@ import logoutRouter from "./routes/logout.router.js";
 import sessionsRouter from "./routes/sessions.router.js";
 import currentRouter from "./routes/current.router.js";
 import resultadoRouter from "./routes/resultado.router.js";
+import forgotpassRouter from "./routes/forgotpass.router.js";
 import initializePassport from './config/passport.config.js';
+import sendEmailPassRouter from './routes/sendEmailPass.router.js';
+import resetPasswordRouter from './routes/resetPassword.router.js';
 import cookieParser from 'cookie-parser';
 
 import { MONGO_URI, PORT, KEY_SECRET } from './config/config.js';
 import MockingProductsRouters from './routes/mockingproducts.router.js';
 import { addLogger } from './utils/logger.js';
-
-
-
 
 const app = express();
 const PUERTO = PORT || 8080;
@@ -76,6 +76,9 @@ app.use("/api/sessions", sessionsRouter);
 app.use("/current", currentRouter);
 app.use("/api/resultado", resultadoRouter);
 app.use("/mockingproducts", MockingProductsRouters)
+app.use("/api/forgotpass", forgotpassRouter);
+app.use("/api/sendEmailPass", sendEmailPassRouter);
+app.use("/api/resetPassword", resetPasswordRouter);
 
 app.get("/loggerTest", (req, res) => {
     req.logger.debug("Este es un mensaje de depuración"); 

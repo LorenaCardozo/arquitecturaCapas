@@ -12,5 +12,6 @@ export const ADM_PASS = process.env.ADM_PASS
 export const KEY_SECRET = process.env.KEY_SECRET
 export const MAIL = process.env.MAIL
 export const MAIL_PASS = process.env.MAIL_PASS
+export const SITE_URL = process.env.SITE_URL
 
 

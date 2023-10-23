@@ -29,6 +29,7 @@ export class AuthManager {
     }
 
     static isInvalidPassword(user, password) {
+
         if (user.admin === true) return false;
 
         return !bcrypt.compareSync(password, user.password);

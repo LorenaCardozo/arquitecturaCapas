@@ -10,6 +10,7 @@ const productSchema = new mongoose.Schema({
     price: Number,
     status: Boolean,
     stock: Number,
+    owner: {type: String, default: 'admin'}, 
 })
 productSchema.plugin(mongoosePaginate); // Aplica el plugin de paginación
 

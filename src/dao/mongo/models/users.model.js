@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, max: 100 },
   email: { type: String, required: true, max: 100, unique: true},
   password: { type: String, required: false, max: 100 },
-  role: {type: String, default: 'user'},
+  role: {type: String, enum: ['user', 'admin', 'premium'], default: 'user'},
   cart: { type: mongoose.Schema.Types.ObjectId, ref: 'CartModel' } // Referencia a un carrito único por usuario
   
 });

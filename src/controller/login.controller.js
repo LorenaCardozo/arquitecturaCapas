@@ -27,6 +27,8 @@ async function login (req, res){
         req.session.username = result.username;
         req.session.email = result.email;
 
+        console.log(token);
+
        // Configura las cookies individualmente
 const cookieOptions = {
     httpOnly: true,

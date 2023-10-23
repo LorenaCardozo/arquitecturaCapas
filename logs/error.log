@@ -1,1 +1,4 @@
 
+{"kind":"ObjectId","level":"error","path":"_id","reason":{},"stringValue":"\"145525\"","value":"145525","valueType":"string"}
+{"data":{"__v":0,"_id":"6535b06c8d249d33b7601c20","products":[{"_id":"6535b10b8d249d33b7601c26","productId":"652074ea75d0075796a9fce3","quantity":1}]},"level":"info","message":"El producto se agrego correctamente al carrito"}
+{"data":{"__v":0,"_id":"6535b06c8d249d33b7601c20","products":[{"_id":"6535b10b8d249d33b7601c26","productId":"652074ea75d0075796a9fce3","quantity":1},{"_id":"6535b10d8d249d33b7601c2e","productId":"6520750675d0075796a9fce8","quantity":1}]},"level":"info","message":"El producto se agrego correctamente al carrito"}
