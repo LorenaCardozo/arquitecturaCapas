@@ -35,12 +35,11 @@ async function getAll(req, res) {
         const result = await products.getAll(limit, page, sort, query);
         const plainProducts = result.docs.map(doc => doc.toObject());
 
-        //console.log("ESTOS SON LOS PRODUCTOS", plainProducts)
-
-       // console.log("PRODUCTOS", plainProducts);
-
         res.render("products", { Leyenda: "Lista de productos", productos: plainProducts, userName: userName, userRole: userRole, admin: admin, cartId: cartId, email: email });
+
+        
     } catch (error) {
+        console.log(error)
         req.logger.error("Error al obtener los productos")
         res.status(500).json({
             message: "Error al obtener los productos",

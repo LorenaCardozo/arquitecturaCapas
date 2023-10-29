@@ -45,6 +45,7 @@ async function getId(req, res){
 async function save(req, res){
     try {
         const p = { products: [] }
+
         const result = await carts.save(p);
         return result
         /*res.json({

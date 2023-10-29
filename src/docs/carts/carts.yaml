@@ -1,0 +1,278 @@
+paths:
+  /api/carts:
+    get:
+      summary: Obtiene todos los Carritos
+      tags:
+        - Carts
+      security:
+        - bearerAuth: []  # Especifica que esta ruta requiere autenticación mediante un token bearer
+      responses:
+        '200':
+          description: Los carritos fueron obtenidos satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        products:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              quantity:
+                                type: integer
+                              _id:
+                                type: string
+                        __v:
+                          type: integer
+                  message:
+                    type: string
+        '500':
+          description: Error interno del servidor
+    post:
+      summary: Alta de carrito
+      tags:
+        - Carts
+      security:
+        - bearerAuth: []  # Especifica que esta ruta requiere autenticación mediante un token bearer
+      responses:
+        '200':
+          description: El carrito fue dado de alta satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      products:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            title:
+                              type: string
+                            description:
+                              type: string
+                            code:
+                              type: string
+                            price:
+                              type: number
+                            status:
+                              type: boolean
+                            stock:
+                              type: integer
+                            owner:
+                              type: string
+                  _id:
+                    type: string
+                  __v:
+                    type: integer
+                  message:
+                    type: string
+        '500':
+          description: Error interno del servidor
+          
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene un carrito segun su ID
+      tags:
+        - Carts
+      security:
+        - bearerAuth: []  # Especifica que esta ruta requiere autenticación mediante un token bearer
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito a consultar
+          schema:
+            type: string
+      responses:
+        '200':
+          description: El carrito fue obtenido satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        products:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              quantity:
+                                type: integer
+                              _id:
+                                type: string
+                        __v:
+                          type: integer
+                  message:
+                    type: string
+        '500':
+          description: Error interno del servidor
+    delete:
+      summary: Elimina un carrito segun su ID
+      tags:
+        - Carts
+      security:
+        - bearerAuth: []  # Especifica que esta ruta requiere autenticación mediante un token bearer
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito a eliminar
+          schema:
+            type: string
+      responses:
+        '200':
+          description: El carrito fue eliminado satisfactoriamente
+        '500':
+          description: Error interno del servidor
+    put:
+      summary: Actualiza el contenido de un carrito con una lista de productos
+      tags:
+        - Carts
+      security:
+        - bearerAuth: []  # Especifica que esta ruta requiere autenticación mediante un token bearer
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito a actualizar
+          schema:
+            type: string
+      requestBody:
+        description: Datos de los productos a agregar al carrito
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      productId:
+                        type: string
+                      quantity:
+                        type: integer
+      responses:
+        '200':
+          description: El carrito fue actualizado satisfactoriamente
+        '500':
+          description: Error interno del servidor
+
+  /api/carts/{cid}/products/{pid}:
+    post:
+      summary: Agregar producto a un carrito
+      tags:
+        - Carts
+      security:
+        - bearerAuth: []  # Especifica que esta ruta requiere autenticación mediante un token bearer
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito al que se agregarán productos
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto a agregar
+          schema:
+            type: string
+      responses:
+        '200':
+          description: El carrito fue dado de alta satisfactoriamente
+        '500':
+          description: Error interno del servidor
+    delete:
+
+      summary: Eliminar producto de un carrito
+      tags:
+        - Carts
+      security:
+        - bearerAuth: []  # Especifica que esta ruta requiere autenticación mediante un token bearer
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto a eliminar del carrito
+      responses:
+        '200':
+          description: Se eliminó el producto del carrito satisfactoriamente
+        '500':
+          description: Error interno del servidor  
+    put:
+        summary: Actualiza la cantidad de un producto en un carrito
+        tags:
+          - Carts
+        security:
+          - bearerAuth: []  # Especifica que esta ruta requiere autenticación mediante un token bearer
+        parameters:
+          - name: cid
+            in: path
+            required: true
+            description: ID del carrito
+            schema:
+              type: string
+          - name: pid
+            in: path
+            required: true
+            description: ID del producto a actulizar su cantidad
+            schema:
+              type: string            
+        requestBody:
+          description: Cantidad a actualizar
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quantity:
+                    type: integer
+        responses:
+          '200':
+            description: La cantidad del producto en el carrito fue actualizado satisfactoriamente
+          '500':
+            description: Error interno del servidor
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              productId:
+                type: string  
+              quantity:
+                type: integer
+      required:
+        - products

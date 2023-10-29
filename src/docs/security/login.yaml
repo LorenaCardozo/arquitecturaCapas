@@ -1,0 +1,30 @@
+paths:
+  /api/:
+    post:
+      summary: Iniciar sesión y obtener un token de autenticación
+      tags:
+        - Authentication
+      requestBody:
+        description: Datos de inicio de sesión
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Inicio de sesión exitoso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Credenciales incorrectas

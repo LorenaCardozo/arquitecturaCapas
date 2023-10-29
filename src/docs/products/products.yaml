@@ -1,0 +1,179 @@
+openapi: 3.0.0
+
+paths:
+  /api/products:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+        - Products
+      security:
+        - bearerAuth: []  # Especifica que esta ruta requiere autenticación mediante un token bearer
+      responses:
+        '200':
+          description: Productos obtenidos satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  productos:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        owner:
+                          type: string
+                        _id:
+                          type: string
+                        title:
+                          type: string
+                        description:
+                          type: string
+                        code:
+                          type: string
+                        price:
+                          type: number
+                        status:
+                          type: boolean
+                        stock:
+                          type: integer
+                        __v:
+                          type: integer
+        '500':
+          description: Error interno del servidor
+    post:
+      summary: Alta de producto
+      tags:
+        - Products
+      security:
+        - bearerAuth: []  # Especifica que esta ruta requiere autenticación mediante un token bearer
+      requestBody:
+        description: Datos del producto a dar de alta
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                code:
+                  type: string
+                price:
+                  type: number
+                status:
+                  type: boolean
+                stock:
+                  type: integer
+                owner:
+                  type: string                  
+      responses:
+        '200':
+          description: El producto fue dado de alta satisfactoriamente
+        '500':
+          description: Error interno del servidor
+
+  /api/products/{pid}:
+    delete:
+      summary: Elimina un producto segun su ID
+      tags:
+        - Products
+      security:
+        - bearerAuth: []  # Especifica que esta ruta requiere autenticación mediante un token bearer
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto a eliminar
+          schema: 
+            $type: string            
+      responses:
+        '200':
+          description: Los productos fueron obtenidos satisfactoriamente
+        '500':
+          description: Error interno del servidor
+    get:
+      summary: Devuelve un producto segun su ID
+      tags:
+        - Products
+      security:
+        - bearerAuth: []  # Especifica que esta ruta requiere autenticación mediante un token bearer
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto a eliminar
+          schema: 
+            $type: string            
+      responses:
+        '200':
+          description: Los productos fueron obtenidos satisfactoriamente
+        '500':
+          description: Error interno del servidor          
+    put:
+      summary: Modifica un producto segun su ID
+      tags:
+        - Products
+      security:
+        - bearerAuth: []  # Especifica que esta ruta requiere autenticación mediante un token bearer
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto a modificar
+          schema: 
+            $type: string      
+      requestBody:
+        description: Datos del producto a modificar
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  required: false
+                description:
+                  type: string
+                code:
+                  type: string
+                price:
+                  type: number
+                status:
+                  type: boolean
+                stock:
+                  type: integer
+      responses:
+        '200':
+          description: El producto fue modificado satisfactoriamente
+        '500':
+          description: Error interno del servidor                
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Product:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        code:
+          type: string
+        price:
+          type: number
+        status:
+          type: boolean
+        stock:
+          type: integer
+        owner:
+          type: string      

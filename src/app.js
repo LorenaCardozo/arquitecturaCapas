@@ -7,6 +7,8 @@ import productRouter from "./routes/products.router.js";
 import session from "express-session"
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUIExpress from 'swagger-ui-express'
 
 import loginRouter from "./routes/login.router.js";
 import signupRouter from "./routes/signup.router.js";
@@ -34,7 +36,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 initializePassport();
 app.use(passport.initialize());
-
 app.use(addLogger);
 
 //Conexion a la base de datos
@@ -47,6 +48,24 @@ dbConnect.then(
     () => { console.log("Conexión a la base de datos exitosa"); },
     (error) => { console.log("Error en la conexión a la base de datos", error); }
 )
+
+// swagger
+
+const swaggerOptions = {
+    definition:{
+        openapi:"3.0.1",
+        info:{
+            title:"ComprasExpress - Tu Rincón de Compras en la Web",
+            version: "1.0.0",
+            description:"Tu Destino Principal para Compras en Línea",
+        },
+    },
+    apis:[`${__dirname}/docs/**/*.yaml`],
+};
+
+console.log(`.${__dirname}/docs/**/*.yaml`);
+
+const specs = swaggerJSDoc(swaggerOptions);
 
 app.use(session({
     store: MongoStore.create({
@@ -79,6 +98,7 @@ app.use("/mockingproducts", MockingProductsRouters)
 app.use("/api/forgotpass", forgotpassRouter);
 app.use("/api/sendEmailPass", sendEmailPassRouter);
 app.use("/api/resetPassword", resetPasswordRouter);
+app.use("/api-docs", swaggerUIExpress.serve,swaggerUIExpress.setup(specs));
 
 app.get("/loggerTest", (req, res) => {
     req.logger.debug("Este es un mensaje de depuración"); 
