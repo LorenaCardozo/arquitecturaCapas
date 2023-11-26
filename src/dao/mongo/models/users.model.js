@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     validate: {
       validator: function (value) {
-        return value > 0; // Validar que age sea mayor que 0
+        return value > 0; 
       },
       message: 'La edad debe ser mayor que 0.'
     }
@@ -19,8 +19,8 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, max: 100, unique: true},
   password: { type: String, required: false, max: 100 },
   role: {type: String, enum: ['user', 'admin', 'premium'], default: 'user'},
-  cart: { type: mongoose.Schema.Types.ObjectId, ref: 'CartModel' } // Referencia a un carrito único por usuario
-  
+  cart: { type: mongoose.Schema.Types.ObjectId, ref: 'CartModel' }, // Referencia a un carrito único por usuario
+  last_login: { type: Date } //  última conexión
 });
 
 const User = mongoose.model(userCollection, userSchema);

@@ -25,3 +25,41 @@
 {"level":"error","message":"Error al obtener los productos"}
 {"data":{"__v":0,"_id":"653ed7701b75dacd2cf6c53d","products":[{"_id":"653ed7971b75dacd2cf6c543","productId":"64d9123d5fca262b772fd3b8","quantity":1}]},"level":"info","message":"El producto se agrego correctamente al carrito"}
 {"data":{"__v":0,"_id":"653ed7701b75dacd2cf6c53d","products":[{"_id":"653ed7971b75dacd2cf6c543","productId":"64d9123d5fca262b772fd3b8","quantity":2}]},"level":"info","message":"El producto se agrego correctamente al carrito"}
+{"level":"error","message":"Error al obtener los productos"}
+{"level":"error","message":"Error al obtener los usuarios"}
+{"level":"error","message":"Error al obtener los usuarios"}
+{"level":"error","message":"Error al obtener los usuarios"}
+{"level":"error","message":"Error al obtener los usuarios"}
+{"level":"error","message":"Error al obtener los usuarios"}
+{"level":"error","message":"Error al obtener los usuarios"}
+{"level":"error","message":"Error al obtener los usuarios"}
+{"level":"error","message":"Error al obtener los usuarios"}
+{"data":{"__v":0,"_id":"655ba7c03a61db506bf02987","products":[{"_id":"655ba85166b2d16aa09516d5","productId":"64d9123d5fca262b772fd3b8","quantity":1}]},"level":"info","message":"El producto se agrego correctamente al carrito"}
+{"data":{"__v":0,"_id":"655ba7c03a61db506bf02987","products":[{"_id":"655ba85166b2d16aa09516d5","productId":"64d9123d5fca262b772fd3b8","quantity":1},{"_id":"655ba85366b2d16aa09516dd","productId":"64dadd656068247d7973d543","quantity":1}]},"level":"info","message":"El producto se agrego correctamente al carrito"}
+{"data":{"__v":0,"_id":"655ba7c03a61db506bf02987","products":[{"_id":"655ba85166b2d16aa09516d5","productId":"64d9123d5fca262b772fd3b8","quantity":1},{"_id":"655ba85366b2d16aa09516dd","productId":"64dadd656068247d7973d543","quantity":1},{"_id":"655ba85566b2d16aa09516e9","productId":"652074ea75d0075796a9fce3","quantity":1}]},"level":"info","message":"El producto se agrego correctamente al carrito"}
+{"level":"error","message":"Error al eliminar los usuarios"}
+{"level":"error","message":"Error al eliminar los usuarios"}
+{"level":"error","message":"Error al eliminar usuarios inactivos"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al modificar el usuario"}
+{"level":"error","message":"Error al eliminar el usuario"}
+{"level":"error","message":"Error al eliminar el usuario"}
+{"level":"error","message":"Error al eliminar usuarios inactivos"}
+{"level":"error","message":"Error al eliminar usuarios inactivos"}
+{"level":"error","message":"Error al eliminar usuarios inactivos"}

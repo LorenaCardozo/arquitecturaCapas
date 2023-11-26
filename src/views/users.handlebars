@@ -1,0 +1,22 @@
+<h1>Lista de Usuarios</h1>
+<ul>
+    {{#each users}}
+        <li>
+            <strong>Username:</strong> {{username}}, 
+            <strong>Email:</strong> {{email}}, 
+            <strong>Rol:</strong> {{role}}
+            
+            <button class="adm-user_role" data-user-id={{id}} data-current-role={{role}}>                
+                {{#if (equal role 'user')}}
+                    Cambiar a Premium
+                {{else if (equal role 'premium')}}
+                    Cambiar a User
+                {{/if}}
+            </button>
+            
+            <button class="adm-user_delete" data-user-id={{id}}>             
+            Eliminar</button>
+        </li>
+    {{/each}}
+
+    </ul>

@@ -9,6 +9,7 @@ import MongoStore from 'connect-mongo';
 import passport from 'passport';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUIExpress from 'swagger-ui-express'
+import exphbs from 'express-handlebars';
 
 import loginRouter from "./routes/login.router.js";
 import signupRouter from "./routes/signup.router.js";
@@ -21,10 +22,12 @@ import initializePassport from './config/passport.config.js';
 import sendEmailPassRouter from './routes/sendEmailPass.router.js';
 import resetPasswordRouter from './routes/resetPassword.router.js';
 import cookieParser from 'cookie-parser';
+import userRouter from "./routes/users.router.js";
 
 import { MONGO_URI, PORT, KEY_SECRET } from './config/config.js';
 import MockingProductsRouters from './routes/mockingproducts.router.js';
 import { addLogger } from './utils/logger.js';
+import methodOverride from 'method-override';
 
 const app = express();
 const PUERTO = PORT || 8080;
@@ -98,6 +101,9 @@ app.use("/mockingproducts", MockingProductsRouters)
 app.use("/api/forgotpass", forgotpassRouter);
 app.use("/api/sendEmailPass", sendEmailPassRouter);
 app.use("/api/resetPassword", resetPasswordRouter);
+
+app.use("/api/users", userRouter);
+
 app.use("/api-docs", swaggerUIExpress.serve,swaggerUIExpress.setup(specs));
 
 app.get("/loggerTest", (req, res) => {
@@ -114,9 +120,20 @@ const httpServer = app.listen(PUERTO, () => {
     console.log("Servidor corriendo en puerto: " + PUERTO)
 })
 
-app.engine('handlebars', engine());
+const hbs = exphbs.create({
+    helpers: {
+        equal: function (a, b) {
+            return a === b;
+        },
+    },
+});
+
+//app.engine('handlebars', engine());
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.set("views", `${__dirname}/views`);
+// middleware method-override
+app.use(methodOverride('_method'));
 
 app.use(express.static("public"));
 

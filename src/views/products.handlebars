@@ -6,12 +6,12 @@
     </div>
 
     <!-- Agregar el botón "Administrar Productos" solo para el rol de administrador/ premium -->
-{{!--     {{#if admin}}
-    <button id="add-products">Administrar Productos</button>
-    {{else}} --}}
-    {{#unless admin}}
+ {{#if admin}}
+    <button id="adm-products">Administrar Productos</button>
+    <button id="adm-user" class="adm-user">Administrar Usuarios</button>
+    {{else}}
+
     <button class="cart-button"  data-cart-id="{{ cartId }}"> Ir al carrito</button>
-    {{/unless}}
 
     <h2>{{ Leyenda }}</h2>
     <ul class="product-items">
@@ -37,6 +37,6 @@
         </li>
         {{/each}}
     </ul>
-{{!--     {{/if}} --}}
+{{/if}} 
 
 </div>

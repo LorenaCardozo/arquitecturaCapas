@@ -20,12 +20,19 @@ async function login(req, res) {
             respuesta: "error de autenticación",
         });
     } else {
+        
         if (AuthManager.isInvalidPassword(result, password)) return res.status(401).send({ status: "error", error: "Error. Revise los datos." });
 
         const token = generarToken({ email: result.email, username: result.username, admin: result.admin, role: result.role });
 
         req.session.username = result.username;
         req.session.email = result.email;
+
+
+        if (!result.admin){
+        result.last_login = new Date();
+        result.save();
+        }
 
         console.log(token);
 

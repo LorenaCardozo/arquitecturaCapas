@@ -1,8 +1,10 @@
 import Products from "../dao/products.dao.js";
+import Users from "../dao/users.dao.js";
 import { customizeError } from "../service/customizeErrors.js";
 import { generateProductErrorInfo } from "../service/info.js";
 
 const products = new Products();
+const users = new Users();
 
 const camposCompletos = (product) => {
 
@@ -79,21 +81,57 @@ async function save(req, res) {
 
 async function deleteId(req, res) {
     const { id } = req.params;
-    try {
 
+    try {
+        // Obtengo la información del producto
+        const product = await products.getById(id);
+
+        if (!product) {
+            return res.status(404).json({
+                message: "Producto no encontrado",
+            });
+        }
+
+        const { owner } = product;
+
+        const ownerIsPremium = await isUserPremium(owner);
+
+        // Elimino el producto
         const result = await products.delete(id);
+
+        // Si el Owner es Premium, enviar un correo electrónico
+        if (ownerIsPremium) {
+            const ownerEmail = owner;
+            enviarCorreoHtml(ownerEmail, "Producto Eliminado", "Tu producto ha sido eliminado.");
+        }
+
         res.json({
             data: result,
-            message: "Producto eliminado exitosamente"
-        })
+            message: "Producto eliminado exitosamente",
+        });
     } catch (error) {
-        req.logger.error(error)
+        req.logger.error(error);
         res.status(500).json({
             message: "Error al eliminar el producto",
             error: error,
         });
     }
 }
+
+async function isUserPremium(email) {
+
+    if (email === 'admin') 
+        return false;
+    else{
+        const usuario = await users.getByMail(email)
+
+        if(usuario)
+        {
+            return usuario.role === 'premium'
+        }
+    }
+}
+
 
 async function getId(req, res) {
     const { id } = req.params;
